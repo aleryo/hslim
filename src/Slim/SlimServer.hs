@@ -2,23 +2,22 @@
 
 module Slim.SlimServer where
 
-import           Control.Monad.State   hiding (void)
-import qualified Data.ByteString       as BS
-import qualified Data.ByteString.Char8 as BS8
-import           Data.ByteString.UTF8  (fromString)
-import qualified Data.Map              as M
-import           Data.Monoid           ((<>))
+import           Control.Arrow
+import           Control.Concurrent.Async
+import           Control.Monad.State      hiding (void)
+import qualified Data.ByteString          as BS
+import qualified Data.ByteString.Char8    as BS8
+import           Data.ByteString.UTF8     (fromString)
+import qualified Data.Map                 as M
+import           Data.Monoid              ((<>))
+import           Network.Socket
 import           Slim.Slim
 import           Slim.SlimClientIO
-
-import           Control.Arrow
-import           Control.Concurrent    (ThreadId, forkIO)
-import           Network.Socket
 import           System.IO
 
 -- |Starts a slim server on given port and returns this port
-startSlimServer :: Int -> IO ThreadId
-startSlimServer = forkIO . doServe
+startSlimServer :: Int -> IO (Async ())
+startSlimServer = async . doServe
 
 doServe :: Int -> IO ()
 doServe port =

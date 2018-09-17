@@ -4,10 +4,11 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 module Slim.SlimServerTest where
 
-import           Control.Concurrent  (killThread, threadDelay)
+import           Control.Concurrent       (threadDelay)
+import           Control.Concurrent.Async (cancel)
 import           Control.Exception
 import           Control.Monad.State
-import qualified Data.Map            as M
+import qualified Data.Map                 as M
 import           Slim
 import           Test.HUnit
 
@@ -54,7 +55,7 @@ canConnectToSlimServerAndInvokeMethods =
      (liftIO $ threadDelay 500000)
      answer <- sendToSlimAndClose port divisionBy4 `catch` \ (e :: SomeException) -> return (KO (show e))
      print answer
-     killThread tid
+     cancel tid
      assertEqual "output from Slim server is not correct" divisionBy4result answer
     where
       port = 4567

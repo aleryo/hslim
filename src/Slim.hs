@@ -1,10 +1,10 @@
-module Slim(module Slim.SlimClient
-           ,module Slim.Slim
-           , module Slim.SlimServer
-           , module Slim.SlimClientIO)
-       where
+module Slim ( module Slim.SlimClient
+            , module Slim.Slim
+            , module Slim.SlimServer
+            , module Slim.SlimClientIO
+            ) where
 
-import Slim.SlimClient
-import Slim.Slim
-import Slim.SlimServer
-import Slim.SlimClientIO
+import           Slim.Slim
+import           Slim.SlimClient
+import           Slim.SlimClientIO
+import           Slim.SlimServer

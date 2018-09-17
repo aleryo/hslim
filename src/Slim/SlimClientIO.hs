@@ -13,7 +13,8 @@ import           Slim.Slim
 import           Slim.SlimClient
 import           System.Info
 import           System.IO            (BufferMode (..), Handle, IOMode (..),
-                                       hClose, hFlush, hGetLine, hSetBuffering)
+                                       hClose, hFlush, hGetLine, hSetBuffering,
+                                       stdout)
 import qualified System.IO            as IO
 import           System.Process
 import           Text.Printf
@@ -33,10 +34,7 @@ connectTo host port = do address <- inet_addr host
                          socketToHandle sock ReadWriteMode
 
 countAnswerChars :: Handle -> IO Int
-countAnswerChars h = do
-  c <- hGet h 6
-  putStrLn $ "counting answer chars " ++ toString c
-  return $ readInt (toString c)
+countAnswerChars = countAnswerCharsLog stdout
 
 countAnswerCharsLog :: Handle ->  Handle -> IO Int
 countAnswerCharsLog loggerHandle h = do
