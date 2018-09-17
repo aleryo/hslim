@@ -81,34 +81,46 @@ divisionBy4result = A $ L [L [S "1",S "OK"],L [S "2",S "/__VOID__/"],L [S "3",S 
 
 testDivisionOutput :: Answer
 testDivisionOutput = A $ L [L [S "1",S "OK"],L [S "2",S "/__VOID__/"],L [S "3",S "/__VOID__/"],L [S "4",S "5.0"]]
+
 divisionFixture :: Div
 divisionFixture = Div 0 0
+
 divisionFixture' :: Div
 divisionFixture' = Div 10 2
+
 quotient' :: Instruction [Char]
 quotient' = Call "4" "division" "quotient" []
+
 factory :: Instruction [Char]
 factory =  Make "1" "division" "eg.Division" []
+
 defineNumerator :: Argument -> Instruction [Char]
 defineNumerator s = (Call "2" "division" "setNumerator" [ s ])
+
 defineDenominator :: Argument -> Instruction [Char]
 defineDenominator s = (Call "2" "division" "setDenominator" [ s ])
+
 mixedCalls :: [Instruction [Char]]
 mixedCalls = [
        Make "1" "division1" "eg.Division" [],
        Make "2" "division2" "eg.Division" [],
        Call "3" "division2" "setNumerator" [ "10" ]
        ]
+
 nothing :: M.Map String Div
 nothing = M.empty :: M.Map String Div
 
 callNonExistentMethod :: [Instruction [Char]]
 callNonExistentMethod = (mixedCalls ++ [  Call "4" "division2" "nonExistantMethod" [ "10" ] ])
+
 callNonExistentInstance :: [Instruction [Char]]
 callNonExistentInstance = (mixedCalls ++ [  Call "4" "division3" "setNumerator" [ "10" ] ])
+
 nonExistentError :: NestedList
 nonExistentError =  (L [ S "4", S "__EXCEPTION__: NO_METHOD_IN_CLASS nonExistantMethod division2"])
+
 noInstanceError :: NestedList
 noInstanceError =  (L [ S "4", S "__EXCEPTION__: NO_INSTANCE division3"])
+
 answersWith :: NestedList -> [NestedList]
 answersWith err      = [ (L [S "1",S "OK"]), (L [S "2",S "OK"]), (L [S "3",S "/__VOID__/"])] ++ [err]

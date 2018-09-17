@@ -140,7 +140,13 @@ instance Invokable Div where
   call (Call x _n "getNumerator" [])   = getter x getNumerator
   call (Call x _n "getDenominator" []) = getter x getDenominator
   call (Call x  _n "quotient" [])         = get >>= return . val x . quotient
-  call (Call x  n m _)                   = return $ exception x ("NO_METHOD_IN_CLASS " ++ m ++ " " ++ n)
+  -- The next 5 are standard decision tables API calls we can ignore
+  call (Call _ _ "endTable" _)                   = return $ ok ""
+  call (Call _ _ "beginTable" _)                   = return $ ok ""
+  call (Call _ _ "table" _)                   = return $ ok ""
+  call (Call _ _ "execute" _)                   = return $ ok ""
+  call (Call _ _ "reset" _)                   = return $ ok ""
+  call (Call x n m _)                   = return $ exception x ("NO_METHOD_IN_CLASS " ++ m ++ " " ++ n)
   call (Make x  _n "eg.Division" [])      = do put $ Div 0 0
                                                return $ ok x
   call c                                 = error $ "Cannot call " <> show c <> " on Div invokable"
